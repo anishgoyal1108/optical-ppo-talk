@@ -1,7 +1,8 @@
 # Publishes site/ to GitHub Pages. It runs only when started by hand:
-#   gh workflow run pages.yml -R anishgoyal1108/optical-ppo-talk      (or tools/pages.sh deploy, or the Actions tab)
-# A push never publishes anything. Pages must be on for the repository first (tools/pages.sh setup); on a private
-# repository that needs GitHub Pro.
+#   gh workflow run pages.yml -R anishgoyal1108/optical-ppo-talk      (or the Actions tab)
+# A push never publishes anything.
+# It is used when Pages is fed by "GitHub Actions" (tools/pages.sh source actions). While GitHub Actions is not
+# available on the account, Pages is fed by the gh-pages branch and tools/pages.sh deploy pushes the site there.
 name: Publish the deck to GitHub Pages
 
 on:
