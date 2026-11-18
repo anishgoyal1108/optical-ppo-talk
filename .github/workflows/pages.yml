@@ -1,0 +1,35 @@
+# Publishes site/ to GitHub Pages. It runs only when started by hand:
+#   gh workflow run pages.yml -R anishgoyal1108/optical-ppo-talk      (or tools/pages.sh deploy, or the Actions tab)
+# A push never publishes anything.
+name: Publish the deck to GitHub Pages
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v7
+      - name: Set up Pages
+        uses: actions/configure-pages@v6
+      - name: Upload the built deck
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: site
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v5
