@@ -6,13 +6,13 @@
 <script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="index_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.11.9">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-dark-b626d73c4c936ccc3cb08be7d45d1df6.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.19">
 
   <title>Optical PPO</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
   <link rel="stylesheet" href="index_files/libs/revealjs/dist/reset.css">
   <link rel="stylesheet" href="index_files/libs/revealjs/dist/reveal.css">
   <style>
@@ -34,7 +34,7 @@
       vertical-align: middle;
     }
   </style>
-  <link rel="stylesheet" href="index_files/libs/revealjs/dist/theme/quarto-13e087a8d236245273cab8a27bc22c10.css">
+  <link rel="stylesheet" href="index_files/libs/revealjs/dist/theme/quarto-1866d6e2d2befe73ca82464a766b4383.css">
   <link href="index_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="index_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="index_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -233,7 +233,7 @@
 <section id="section-6" class="slide level2" data-rc="RcProblems" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
-<p>Before part one, why bother. From what I’ve seen, optical reservoir computing in the literature has three recurring problems. Sometimes, not always: it is beaten by a plain fully connected linear network. It is very hard to build. And it claims high energy efficiency for a setup that almost certainly is not efficient. Can we do better?</p>
+<p>Before part one, why bother. From what I’ve seen, optical reservoir computing in the literature has two recurring problems. Sometimes, not always: it is beaten by a plain fully connected linear network. And it claims high energy efficiency for a setup that almost certainly is not efficient. Can we do better?</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -361,7 +361,7 @@
 <section id="section-14" class="slide level2" data-rc="ToneStrength" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
-<p>And what is epsilon? Just a scale factor: how strong the tones are next to the pump. Watch it go from one, where we run, down by a factor of fifty and back. Nothing in the game fixes it. It is a hyperparameter, handed to us.</p>
+<p>And what is epsilon? It is the strength of the tones, in the same units as the pump. This is the equation the ring obeys. F naught is the pump, and each tone adds f j: epsilon times one plus the squashed input. Time is counted in the ring’s decay time, and power in units of the comb threshold. Here F naught squared is ten, so the pump is at ten times the threshold, and epsilon is one. So a tone carries a tenth of the pump’s power when its input is zero, and at most four tenths. Watch epsilon go from one down by a factor of fifty and back. Nothing in the game fixes it. It is a hyperparameter.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -377,7 +377,7 @@
 <section id="section-15" class="slide level2" data-rc="RegimeMap" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
-<p>So what are these regimes? The tones go into a ring that is already pumped, and what that ring does on its own depends on two settings: how far the pump sits from the resonance, the detuning, and how hard it pumps. Here is that map, recomputed with Pasha’s solver: every cell is one simulation started from noise, sorted by how uneven the light is around the ring and how much it flickers. Grey is no pattern: the light stays flat. Blue is Turing rolls, red is chaos, green is where a soliton survives if you seed one. The shaded wedge is where the ring has two flat states.</p>
+<p>So what are these regimes? The tones go into a ring that is already pumped, and what that ring does on its own depends on two settings: how far the pump sits from the resonance, the detuning, and how hard it pumps, in units of the comb threshold. Here is that map. I recomputed it: every cell is one simulation started from noise. A cell is flat if the light varies around the ring by less than one percent; Turing rolls if the pattern then changes in time by less than two percent; otherwise it moves, and it is breathing if the pattern comes back and chaos if it does not. I set those thresholds by hand. Grey is no pattern, blue is Turing rolls, red is chaos, green is where a soliton survives if you seed one. The shaded wedge is where the ring has two flat states.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -393,7 +393,7 @@
 <section id="section-16" class="slide level2" data-rc="BestEps" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
-<p>This is where my own sweep comes in. For each regime I scanned the tone strength and asked how well a linear readout on the comb recovers the inputs, their pair products and their triple products. The inputs come through almost anywhere. The products do not: every regime has a window and a best epsilon. Push past it and the soliton and the rolls lose their pattern; stay below it and the chaotic comb hides the tones in its own noise. The triangles are the values in Pasha’s code. So epsilon is a real knob, and its best value depends on the regime.</p>
+<p>This is my own sweep. For each regime I scanned the tone strength. The y-axis is the held-out R squared of a linear readout of the seventeen line powers: how well a weighted sum of the lines reproduces a target, on inputs it was not fitted on. One means perfectly. There are three targets: the inputs themselves, their pair products, one input times another, and their triple products. The thin lines are three seeds, the thick line is their mean. The inputs come through almost anywhere. The products do not: every regime has a window, and the dashed line marks its best epsilon, where the pair products are recovered best. Push past it and the soliton and the rolls lose their pattern; stay below it and the chaotic comb hides the tones in its own noise. So epsilon is a real knob, and its best value depends on the regime.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -409,7 +409,7 @@
 <section id="section-17" class="slide level2" data-rc="RegimeSettles" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
-<p>One thing I played with. Pasha’s code can run the ring in four regimes. In the one every run here uses, I switched the input from one state of a game to another and watched the seventeen lines: they relax to a new steady comb in about eight decay times and stay there. A control step lasts about a million of those, so in this regime one input gives one comb.</p>
+<p>One thing I played with. The ring has four regimes, and the main pump and the detuning alone pick which one. The pump is on all the time; it is never switched off. At time zero only the weak tones change, from one state of a game to another, and they stay on. In the no-pattern ring the seventeen lines relax to a new steady comb in about eight decay times and stay there. A control step lasts about a million of those, so here one input gives one comb.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -457,7 +457,7 @@
 <section id="section-20" class="slide level2" data-rc="FourWaveMixing" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
-<p>Mohammad’s equation for one line n has a loss, our drive, and the Kerr cross terms: g times a product of three line amplitudes, one of them conjugated. That product lands on line m2 plus m3 minus m1. The simplest case: the pump and two tones, on lines one and three. The product a zero star, a one, a three lands on line four, which nothing drives. Turn the Kerr up and line four lights.</p>
+<p>These are the solver’s combs, not the lab’s. An example first: the pump and two tones, on lines one and three. The Kerr term multiplies three line amplitudes, one of them conjugated. The product a zero star, a one, a three lands on line one plus three minus zero: line four, which nothing drives. Turn the Kerr up and line four lights. In Mohammad’s equation for line n that is the cross term: g times a m1 star, a m2, a m3, whenever m2 plus m3 minus m1 is n.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -473,7 +473,7 @@
 <section id="section-21" class="slide level2" data-rc="Detection" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
-<p>Reading the ring: a photodiode behind each line gives its power. One frame of the comb is seventeen numbers, the feature vector phi. Red is above a line’s usual value, blue below. From here on, phi is all the readout ever sees.</p>
+<p>Reading the ring: a photodiode behind each line gives its power. One frame of the comb is seventeen numbers, the feature vector phi. Brighter means more power. The readout standardises each line first, and from here on phi is all it ever sees.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -537,7 +537,7 @@
 <section id="section-25" class="slide level2" data-rc="WhatIsRL" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
-<p>Now what that policy is, in one picture. The agent sees the state and holds a probability for each action: these two bars, which add up to one. That is the policy, pi of a given s. It draws its action from them and gets a point per step the pole stays up. This one knows nothing: down in thirteen steps. Slowed six times.</p>
+<p>Reinforcement learning, the textbook way. Two parts: an agent and an environment. Here the environment is the game, and the agent is the ring with its readout. Time runs in steps. At each step the agent reads the state and picks an action; the environment answers with a reward and the next state. One turn of this loop is one time step.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -569,7 +569,7 @@
 <section id="section-27" class="slide level2" data-rc="Rollout" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
-<p>How PPO works, in five steps. Step one: play. Sixty-four games side by side, each with its own copy of the ring. This is the real batch of the fourth training iteration.</p>
+<p>How PPO works, in five steps. Step one: play. Sixty-four copies of CartPole run side by side, each from its own start and each with its own copy of the ring. This is the real batch of the fourth training iteration.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -697,7 +697,7 @@
 <section id="section-35" class="slide level2" data-rc="Sec5" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
-<p>Part five: why bother with the ring at all. The readout is only a linear map, so what it can do depends on what the comb hands it.</p>
+<p>Part five: why bother with the ring at all. The readout is only a linear map, so what it can do depends on what the comb hands it. First XOR, as a picture. Then Pendulum, where the ring beats a linear readout.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -713,7 +713,7 @@
 <section id="section-36" class="slide level2" data-rc="XorCut" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
-<p>Start with XOR: two inputs, red where they agree, blue where they differ. A linear readout draws one straight line, and at least one point is always on the wrong side.</p>
+<p>Start with XOR: two inputs, red where they agree, blue where they differ. A linear readout that sees x one and x two draws one straight line, and at least one point is always on the wrong side.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -726,10 +726,10 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-37" class="slide level2" data-rc="WhyProducts" data-background-color="#1e1e2e">
+<section id="section-37" class="slide level2" data-rc="RacePendulum" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
-<p>Monday’s question: why is a product more nonlinear than a linear layer? First, how to read these maps. Each point is one state of the pendulum: its angle across, from hanging through upright to hanging, and how fast it spins, up the side. Take a state, give it to the readout, see which way it pushes, and colour the point: red counter-clockwise, blue clockwise. Do that for every point and you get the map; the white line is where the choice flips. This is Pasha’s trained linear readout: weights on the three inputs only.</p>
+<p>Pendulum: linear readout left, ring right, same start, same random draws. At update zero both push at random. Every replay is real, at double speed.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -742,23 +742,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-38" class="slide level2" data-rc="PolicyMaps" data-background-color="#1e1e2e">
-<h2></h2>
-<aside class="notes">
-<p>Now the ring. The same kind of map: every state goes through the encoding, the ring in Pasha’s solver and the trained readout, and gets the colour of the torque picked. Left the linear readout, right the ring; both are Pasha’s published readouts. The white line is one swing-up attempt from hanging. The linear readout has a single border, so its pendulum pushes one way and circles near the bottom. The ring’s map flips sign with theta dot and with cosine theta, and its pendulum goes over the top and is caught. Average return: minus 718 against minus 252.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="section-39" class="slide level2" data-rc="Sec6" data-background-color="#1e1e2e">
+<section id="section-38" class="slide level2" data-rc="Sec6" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>Last part: what comes next. A direct test of the ring’s nonlinearity, where this scheme fits and where it doesn’t yet, what a lattice of rings might buy, and how far the optics could reach.</p>
@@ -774,10 +758,10 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-40" class="slide level2" data-rc="XorTest" data-background-color="#1e1e2e">
+<section id="section-39" class="slide level2" data-rc="XorTest" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
-<p>First direction: Mohammad’s XOR test of the nonlinearity. Two tones, each low or high; call them zero and one, so four inputs, through the same ring: four spectra. For a linear ring this is boring: combine the four outputs the XOR way and you get zero. Whatever is left is the nonlinearity.</p>
+<p>First, the next thing to measure in the lab: Mohammad’s XOR test of the ring’s nonlinearity. Two tones, each low or high; call them zero and one, so four inputs, through the same ring: four spectra. For a linear ring, combine the four outputs the XOR way and you get zero. Whatever is left is the nonlinearity. A linear device can only do XOR with a threshold somewhere, and that threshold is itself a nonlinearity. Here it would be the Kerr effect.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -790,7 +774,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-41" class="slide level2" data-rc="SmallInputs" data-background-color="#1e1e2e">
+<section id="section-40" class="slide level2" data-rc="SmallInputs" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>Where does this fit? Every input gets its own tone. CartPole: four tones beside the pump, seventeen lines read, ten pair products.</p>
@@ -806,7 +790,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-42" class="slide level2" data-rc="PhaseSpaceMap" data-background-color="#1e1e2e">
+<section id="section-41" class="slide level2" data-rc="PhaseSpaceMap" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>Next direction: grow the reservoir. One ring becomes a lattice of coupled rings, like Lida’s. For one ring we have the map from part two. For a lattice there is no general model of its phase space yet: nobody has that map. Mohammad’s suggestion is to scan it and let a classifier sort the states by itself, unsupervised.</p>
@@ -822,7 +806,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-43" class="slide level2" data-rc="AllOptical" data-background-color="#1e1e2e">
+<section id="section-42" class="slide level2" data-rc="AllOptical" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>This much is optics today: the tones, the ring and its comb. Everything else, squashing the numbers, the readout, the softmax, the training, is a computer.</p>
@@ -838,7 +822,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-44" class="slide level2" data-rc="Thanks" data-background-color="#1e1e2e">
+<section id="section-43" class="slide level2" data-rc="Thanks" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>Thank you. All of this stands on Pasha’s code and on what Lida, Shi-Yuan, Mahmoud and Mohammad taught me these past weeks. Happy to take questions.</p>
@@ -854,7 +838,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-45" class="slide level2" data-rc="Appendix" data-background-color="#1e1e2e">
+<section id="section-44" class="slide level2" data-rc="Appendix" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>Backup slides, for questions.</p>
@@ -870,7 +854,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-46" class="slide level2" data-rc="AppCartPole" data-background-color="#1e1e2e">
+<section id="section-45" class="slide level2" data-rc="AppCartPole" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>For reference: CartPole’s rules. One point per step until the pole passes twelve degrees or the cart leaves the track, capped at five hundred steps.</p>
@@ -886,7 +870,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-47" class="slide level2" data-rc="AppPendulum" data-background-color="#1e1e2e">
+<section id="section-46" class="slide level2" data-rc="AppPendulum" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>Pendulum’s rules. Every step costs the squared angle from upright plus a little for speed and torque, for two hundred steps; nothing ends the game early.</p>
@@ -902,7 +886,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-48" class="slide level2" data-rc="AppLander" data-background-color="#1e1e2e">
+<section id="section-47" class="slide level2" data-rc="AppLander" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>The lander’s rules. Each step is scored by how much closer, slower and more upright it got, minus fuel; plus or minus a hundred at the end. Two hundred counts as landed.</p>
@@ -918,10 +902,10 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-49" class="slide level2" data-rc="AppPasha" data-background-color="#1e1e2e">
+<section id="section-48" class="slide level2" data-rc="AppPasha" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
-<p>Pasha’s settings, for the record. Left, PPO: sixty-four games, thirty-two steps, twenty passes, clip at 0.2. Right, the ring in the pattern-free regime that every run in this talk uses.</p>
+<p>The settings, for the record. Left, PPO: sixty-four games, thirty-two steps, twenty passes, clip at 0.2. Right, the ring in the pattern-free regime.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -934,10 +918,10 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-50" class="slide level2" data-rc="AppExplored" data-background-color="#1e1e2e">
+<section id="section-49" class="slide level2" data-rc="AppExplored" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
-<p>What I played with in my own repositories. Everything here was re-run on my template and reproduces, but I have not re-derived it, so treat it as preliminary. Several of October’s conclusions flipped in the re-run.</p>
+<p>What I played with in my own repositories. Everything here was re-run on my template and reproduces. Several of October’s conclusions flipped in the re-run.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -950,7 +934,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-51" class="slide level2" data-rc="PendulumNeeds" data-background-color="#1e1e2e">
+<section id="section-50" class="slide level2" data-rc="PendulumNeeds" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>The game that needs it: the trained ring, starting from hanging. At the bottom the torque points along the motion, so each swing gains energy. On the right, the same motion in the plane of angle and speed.</p>
@@ -966,10 +950,10 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-52" class="slide level2" data-rc="LineFour" data-background-color="#1e1e2e">
+<section id="section-51" class="slide level2" data-rc="WhyProducts" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
-<p>Keep that red bar and ask where the ring makes it. Four-wave mixing takes a photon each from lines one and three and puts them on zero and four: cosine theta times theta dot. Two photons from line two can land there too.</p>
+<p>Monday’s question: why is a product more nonlinear than a linear layer? First, how to read these maps. Each point is one state of the pendulum: its angle across, from hanging through upright to hanging, and how fast it spins, up the side. Take a state, give it to the readout, see which way it pushes, and colour the point: red counter-clockwise, blue clockwise. Do that for every point and you get the map; the white line is where the choice flips. This is Pasha’s trained linear readout: weights on the three inputs only.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -982,10 +966,26 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-53" class="slide level2" data-rc="RacePendulum" data-background-color="#1e1e2e">
+<section id="section-52" class="slide level2" data-rc="PolicyMaps" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
-<p>Pendulum: linear readout left, ring right, same start, same random draws. At update zero both push at random. Every replay is real, at double speed.</p>
+<p>Now the ring. The same kind of map: every state goes through the encoding, the ring in Pasha’s solver and the trained readout, and gets the colour of the torque picked. Left the linear readout, right the ring; both are Pasha’s published readouts. The white line is one swing-up attempt from hanging. The linear readout has a single border, so its pendulum pushes one way and circles near the bottom. The ring’s map flips sign with theta dot and with cosine theta, and its pendulum goes over the top and is caught. Average return: minus 718 against minus 252.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="section-53" class="slide level2" data-rc="LineFour" data-background-color="#1e1e2e">
+<h2></h2>
+<aside class="notes">
+<p>Keep that red bar and ask where the ring makes it. Four-wave mixing takes a photon each from lines one and three and puts them on zero and four: cosine theta times theta dot. Two photons from line two can land there too.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1129,7 +1129,7 @@
 <section id="section-62" class="slide level2" data-rc="AppRegimes" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
-<p>Pasha’s figure of the four states the ring can sit in. Left: the light around the ring over time. Middle: its final profile. Right: the comb. Every run in this talk uses the second row: normal dispersion, no patterns, one stable state for each input and no noise of its own.</p>
+<p>Pasha’s figure of the four states the ring can sit in. Left: the light around the ring over time. Middle: its final profile. Right: the comb. The second row is the pattern-free ring: normal dispersion, one stable state for each input and no noise of its own.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1145,7 +1145,7 @@
 <section id="section-63" class="slide level2" data-rc="AppExpressivity" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
-<p>Preliminary, from my October talk. Top row: how nonlinear the ring’s response is as the tones get stronger. Bottom row: how well a linear readout recovers the inputs, their pair products and their triple products. Each regime has a window, and more nonlinearity is not more computing. This was drafted with AI help and I have not re-derived it yet.</p>
+<p>From my October talk. Top row: how nonlinear the ring’s response is as the tones get stronger. Bottom row: how well a linear readout recovers the inputs, their pair products and their triple products. Each regime has a window, and more nonlinearity is not more computing. This was drafted with AI help.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1161,7 +1161,7 @@
 <section id="section-64" class="slide level2" data-rc="AppCollisions" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
-<p>Preliminary, also from October. With more inputs the pair products get harder to read out. Consecutive tones collide: lines one plus four and two plus three feed the same new line. Placing the tones so that no two pairs collide helps until detector noise wins, and it costs more lines. Drafted with AI help, not re-derived yet.</p>
+<p>Also from October. With more inputs the pair products get harder to read out. Consecutive tones collide: lines one plus four and two plus three feed the same new line. Placing the tones so that no two pairs collide helps until detector noise wins, and it costs more lines. Drafted with AI help.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1177,7 +1177,7 @@
 <section id="section-65" class="slide level2" data-rc="AppLines" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
-<p>Preliminary, from my ring-requirements study. How many lines does the readout need? For Pendulum, five to nine lines picked by a lasso do as well as all seventeen. LunarLander lands from about thirteen. A few seeds only, and not re-derived yet.</p>
+<p>From my ring-requirements study. How many lines does the readout need? For Pendulum, five to nine lines picked by a lasso do as well as all seventeen. LunarLander lands from about thirteen. A few seeds only.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1193,7 +1193,7 @@
 <section id="section-66" class="slide level2" data-rc="AppPhase" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
-<p>Preliminary. What if the phases of the input tones drift? The original ring, black, tolerates a tenth of a radian and fails when the tones are unlocked. With collision-free tones and training without a phase lock, red, it does not care. Three seeds, not re-derived yet.</p>
+<p>What if the phases of the input tones drift? The original ring, black, tolerates a tenth of a radian and fails when the tones are unlocked. With collision-free tones and training without a phase lock, red, it does not care. Three seeds.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1209,7 +1209,7 @@
 <section id="section-67" class="slide level2" data-rc="AppPower" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
-<p>Preliminary. Turn the pump down and see when the policy breaks. With one percent relative detector noise it barely matters. With shot and receiver noise it depends on how long the detector integrates: a microsecond holds much further down than a third of a nanosecond. Turning this into watts assumes a one square micron mode area and an estimated coupling g zero, so I do not quote watts. Not re-derived yet.</p>
+<p>Turn the pump down and see when the policy breaks. With one percent relative detector noise it barely matters. With shot and receiver noise it depends on how long the detector integrates: a microsecond holds much further down than a third of a nanosecond. Turning this into watts assumes a one square micron mode area and an estimated coupling g zero, so I do not quote watts.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1225,7 +1225,7 @@
 <section id="section-68" class="slide level2" data-rc="AppCritic" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
-<p>Preliminary, from my optical-critic study. Can the critic read the comb as well? A critic on the actor’s lines clearly beats having no critic, but the MLP critic still wins. I make no claim from this yet.</p>
+<p>From my optical-critic study. Can the critic read the comb as well? A critic on the actor’s lines clearly beats having no critic, but the MLP critic still wins. I make no claim from this yet.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1241,7 +1241,7 @@
 <section id="section-69" class="slide level2" data-rc="AppLattice" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
-<p>Preliminary. The same question with Lida’s lattice as the critic’s reservoir. Lower is better here. On Pendulum it beats a plain linear critic, but most of that comes from remembering the previous step, not from the Kerr effect. On LunarLander nothing separates.</p>
+<p>The same question with Lida’s lattice as the critic’s reservoir. Lower is better here. On Pendulum it beats a plain linear critic, but most of that comes from remembering the previous step, not from the Kerr effect. On LunarLander nothing separates.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -1307,7 +1307,7 @@
 'autoAnimateDuration': 1,
 'autoAnimateUnmatched': true,
 'jumpToSlide': true,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"\u003ci class=\"fas fa-gear\">\u003c/i>","content":"\u003cul class=\"slide-menu-items\">\n\u003cli class=\"slide-tool-item active\" data-item=\"0\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\">\u003ckbd>f\u003c/kbd> Fullscreen\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"1\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\">\u003ckbd>s\u003c/kbd> Speaker View\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"2\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\">\u003ckbd>o\u003c/kbd> Slide Overview\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"3\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\">\u003ckbd>e\u003c/kbd> PDF Export Mode\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"4\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\">\u003ckbd>r\u003c/kbd> Scroll View Mode\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"5\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\">\u003ckbd>?\u003c/kbd> Keyboard Help\u003c/a>\u003c/li>\n\u003c/ul>"}],"openButton":false,"openButtonLabel":"Slide menu"},
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":false},
 'smaller': false,
  
         // Display controls in the bottom right corner
@@ -1562,8 +1562,7 @@
               return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
           }
           // Inspect non-navigation links and adorn them if external
-          window.quartoDecorateExternalLinks = function (root) {
-         var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
           for (var i=0; i<links.length; i++) {
             const link = links[i];
             if (!isInternal(link.href)) {
@@ -1572,69 +1571,8 @@
               if (link.dataset.originalHref !== undefined) {
                 link.href = link.dataset.originalHref;
               }
-              if (!link.classList.contains('no-external-icon')) {
-              }
             }
           }
-          };
-          window.quartoDecorateExternalLinks(window.document);
-        // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
-        // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
-        const hideOnEscAndFocusOut = {
-          name: 'hideOnEscAndFocusOut',
-          defaultValue: true,
-          fn(instance) {
-            const dismiss = () => {
-              // A show scheduled by the trigger delay would otherwise reopen it
-              instance.clearDelayTimeouts();
-              instance.hide();
-            };
-            const onKeyDown = (event) => {
-              if (event.key !== 'Escape') {
-                return;
-              }
-              // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
-              // except an open reveal.js slide menu, which Esc should close too.
-              // The menu handles keys only when its keyboard option is on.
-              const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
-                window.Reveal.getConfig().menu?.keyboard !== false;
-              if (!menuHandlesEsc) {
-                event.stopPropagation();
-              }
-              if (instance.popper.contains(window.document.activeElement)) {
-                // Disabled while refocusing so the focus trigger does not reopen it
-                instance.disable();
-                instance.reference.focus();
-                instance.enable();
-              }
-              dismiss();
-            };
-            const onFocusOut = (event) => {
-              const target = event.relatedTarget;
-              if (target && !instance.reference.contains(target) &&
-                  !instance.popper.contains(target)) {
-                dismiss();
-              }
-            };
-            // On the trigger too: a click trigger (code-annotations: select) has no
-            // blur handling. Attached for the instance's lifetime so leaving the
-            // trigger also cancels a show still pending on the trigger delay.
-            instance.reference.addEventListener('focusout', onFocusOut);
-            return {
-              onShow() {
-                window.document.addEventListener('keydown', onKeyDown, true);
-                instance.popper.addEventListener('focusout', onFocusOut);
-              },
-              onHide() {
-                window.document.removeEventListener('keydown', onKeyDown, true);
-                instance.popper.removeEventListener('focusout', onFocusOut);
-              },
-              onDestroy() {
-                instance.reference.removeEventListener('focusout', onFocusOut);
-              },
-            };
-          },
-        };
         function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
           const config = {
             allowHTML: true,
@@ -1648,7 +1586,6 @@
             interactiveBorder: 10,
             theme: 'light-border',
             placement: 'bottom-start',
-            plugins: [hideOnEscAndFocusOut],
           };
           if (contentFn) {
             config.content = contentFn;
