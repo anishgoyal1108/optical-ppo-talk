@@ -182,23 +182,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-3" class="slide level2" data-rc="ProjectAim" data-background-color="#1e1e2e">
-<h2></h2>
-<aside class="notes">
-<p>My aim is to understand it as a reservoir computer. In that language the ring is the reservoir: a fixed physical system that turns the input into features. The small matrix is the readout, and it is all that learns: thirty-six numbers for this game.</p>
-<style type="text/css">
-        span.MJX_Assistive_MathML {
-          position:absolute!important;
-          clip: rect(1px, 1px, 1px, 1px);
-          padding: 1px 0 0 0!important;
-          border: 0!important;
-          height: 1px!important;
-          width: 1px!important;
-          overflow: hidden!important;
-          display:block!important;
-      }</style></aside>
-</section>
-<section id="section-4" class="slide level2" data-rc="Games" data-background-color="#1e1e2e">
+<section id="section-3" class="slide level2" data-rc="Games" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>Three standard control games. CartPole: push the cart left or right so the pole stays up. What you see is the trained ring playing.</p>
@@ -214,7 +198,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-5" class="slide level2" data-rc="SystemLoop" data-background-color="#1e1e2e">
+<section id="section-4" class="slide level2" data-rc="SystemLoop" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>Here is everything at a glance. Reinforcement learning is a loop: a game hands over its state, an agent answers with an action, again and again. For CartPole the state is four numbers.</p>
@@ -230,7 +214,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-6" class="slide level2" data-rc="Overview" data-background-color="#1e1e2e">
+<section id="section-5" class="slide level2" data-rc="Overview" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>Mohammad asked for this as a reservoir-computing problem, with the ring as the reservoir. So, six parts. One: what goes in and what comes out.</p>
@@ -246,7 +230,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-7" class="slide level2" data-rc="RcProblems" data-background-color="#1e1e2e">
+<section id="section-6" class="slide level2" data-rc="RcProblems" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>Before part one, why bother. From what I’ve seen, optical reservoir computing in the literature has two recurring problems. Sometimes, not always: it is beaten by a plain fully connected linear network. And it claims high energy efficiency for a setup that almost certainly is not efficient. Can we do better?</p>
@@ -262,7 +246,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-8" class="slide level2" data-rc="Sec1" data-background-color="#1e1e2e">
+<section id="section-7" class="slide level2" data-rc="Sec1" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>First, what the game gives us and what we give back: a few numbers in, one of a few actions out.</p>
@@ -278,7 +262,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-9" class="slide level2" data-rc="StateNumbers" data-background-color="#1e1e2e">
+<section id="section-8" class="slide level2" data-rc="StateNumbers" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>CartPole’s whole state is four numbers: cart position and speed, pole angle and how fast it turns. Each bar is in units of that number’s typical size.</p>
@@ -294,7 +278,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-10" class="slide level2" data-rc="Moves" data-background-color="#1e1e2e">
+<section id="section-9" class="slide level2" data-rc="Moves" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>The other end: every step the game wants exactly one action back, out of a fixed handful. Two for CartPole, three for Pendulum, four for the lander.</p>
@@ -310,7 +294,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-11" class="slide level2" data-rc="BoxDimensions" data-background-color="#1e1e2e">
+<section id="section-10" class="slide level2" data-rc="BoxDimensions" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>Between the input and the output sits the feature space. Each game’s numbers go in as tones: four, three, eight. The same ring answers with a comb, and we read seventeen of its lines, thirty-three for the lander: those intensities are the features. One matrix takes them to the actions. Two times seventeen weights plus two biases is thirty-six numbers; fifty-four and a hundred and thirty-six for the other two. The red part is all we train.</p>
@@ -326,7 +310,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-12" class="slide level2" data-rc="Sec2" data-background-color="#1e1e2e">
+<section id="section-11" class="slide level2" data-rc="Sec2" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>Part two, the encoding: how a handful of numbers becomes light. Squash each number, write it onto its own tone, and choose how strong to make the tones.</p>
@@ -342,7 +326,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-13" class="slide level2" data-rc="Squash" data-background-color="#1e1e2e">
+<section id="section-12" class="slide level2" data-rc="Squash" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>Back to the cart-pole’s four numbers. Nothing stops a number from getting big, so before it touches the light it goes through this curve, a hyperbolic tangent.</p>
@@ -358,7 +342,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-14" class="slide level2" data-rc="OneTonePerInput" data-background-color="#1e1e2e">
+<section id="section-13" class="slide level2" data-rc="OneTonePerInput" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>Now the light. A frequency axis with numbered comb lines. Line zero carries the pump, always on. Lines one to four get one number each.</p>
@@ -374,7 +358,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-15" class="slide level2" data-rc="ToneStrength" data-background-color="#1e1e2e">
+<section id="section-14" class="slide level2" data-rc="ToneStrength" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>And what is epsilon? It is the strength of the tones, in the same units as the pump. This is the equation the ring obeys. F naught is the pump, and each tone adds f j: epsilon times one plus the squashed input. Time is counted in the ring’s decay time, and power in units of the comb threshold. Here F naught squared is ten, so the pump is at ten times the threshold, and epsilon is one. So a tone carries a tenth of the pump’s power when its input is zero, and at most four tenths. Watch epsilon go from one down by a factor of fifty and back. Nothing in the game fixes it. It is a hyperparameter.</p>
@@ -390,7 +374,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-16" class="slide level2" data-rc="RegimeMap" data-background-color="#1e1e2e">
+<section id="section-15" class="slide level2" data-rc="RegimeMap" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>So what are these regimes? The tones go into a ring that is already pumped, and what that ring does on its own depends on two settings: how far the pump sits from the resonance, the detuning, and how hard it pumps, in units of the comb threshold. Here is that map. I recomputed it: every cell is one simulation started from noise. A cell is flat if the light varies around the ring by less than one percent; Turing rolls if the pattern then changes in time by less than two percent; otherwise it moves, and it is breathing if the pattern comes back and chaos if it does not. I set those thresholds by hand. Grey is no pattern, blue is Turing rolls, red is chaos, green is where a soliton survives if you seed one.</p>
@@ -406,7 +390,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-17" class="slide level2" data-rc="Sec3" data-background-color="#1e1e2e">
+<section id="section-16" class="slide level2" data-rc="Sec3" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>Part three, the reservoir: a Kerr microring. I won’t go through how it works inside, only far enough to see where products of the inputs come from.</p>
@@ -422,7 +406,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-18" class="slide level2" data-rc="FourWaveMixing" data-background-color="#1e1e2e">
+<section id="section-17" class="slide level2" data-rc="FourWaveMixing" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>The reservoir is a microring next to a waveguide. Its glass has a Kerr effect: the index depends on the intensity of the light, so a line’s frequency shifts with its own intensity. That is the first line up there, omega plus g times a squared, and the knob is g. An example, with the Kerr effect off: the pump and two tones, on lines one and three. These are the solver’s combs, not the lab’s. What we send in is fixed. The grey line is the pump’s light inside the ring, and how much the ring holds changes with the Kerr effect and the tones. The Kerr term multiplies three line amplitudes, one of them conjugated. The product a zero star, a one, a three lands on line one plus three minus zero: line four, which nothing drives. Turn the Kerr up and line four lights. In Mohammad’s equation for line n that is the cross term: g times a m1 star, a m2, a m3, whenever m2 plus m3 minus m1 is n.</p>
@@ -438,7 +422,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-19" class="slide level2" data-rc="Detection" data-background-color="#1e1e2e">
+<section id="section-18" class="slide level2" data-rc="Detection" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>Reading the ring: a photodiode behind each line gives its intensity. One frame of the comb is seventeen intensities, the feature vector phi. Brighter means more intense. The readout standardises each line first, and from here on phi is all it ever sees.</p>
@@ -454,7 +438,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-20" class="slide level2" data-rc="Sec4" data-background-color="#1e1e2e">
+<section id="section-19" class="slide level2" data-rc="Sec4" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>Part four, the centre: how the one trained piece, the readout, learns. The method is PPO: first what that is, then exactly what it does to the weights.</p>
@@ -470,7 +454,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-21" class="slide level2" data-rc="WhatIsPPO" data-background-color="#1e1e2e">
+<section id="section-20" class="slide level2" data-rc="WhatIsPPO" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>Reinforcement-learning methods come in two families. Value-based ones, like Q-learning, learn how good each action is and then take the best one. Policy-gradient methods learn the policy itself, the probabilities, and push them towards actions that paid off.</p>
@@ -486,7 +470,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-22" class="slide level2" data-rc="WhyPolicyGradient" data-background-color="#1e1e2e">
+<section id="section-21" class="slide level2" data-rc="WhyPolicyGradient" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>A toy, to show why. One state, two actions: left pays off seventy percent of the time, right fifty. Two learners, each averaged over 2000 tries of the whole thing. The greedy one tries each action once, then always takes whichever has paid better so far. The policy-gradient one keeps a probability for each and nudges it after every try.</p>
@@ -502,7 +486,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-23" class="slide level2" data-rc="WhatIsRL" data-background-color="#1e1e2e">
+<section id="section-22" class="slide level2" data-rc="WhatIsRL" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>Reinforcement learning, the textbook way. Two parts: an agent and an environment. Here the environment is the game, and the agent is the ring with its readout. Time runs in steps. At each step the agent reads the state and picks an action; the environment answers with a reward and the next state. One turn of this loop is one time step.</p>
@@ -518,7 +502,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-24" class="slide level2" data-rc="ReadoutIsPolicy" data-background-color="#1e1e2e">
+<section id="section-23" class="slide level2" data-rc="ReadoutIsPolicy" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>Here is the policy for one state. The ring hands us seventeen line intensities for it: call that vector phi of s, one number under each comb line.</p>
@@ -534,7 +518,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-25" class="slide level2" data-rc="Rollout" data-background-color="#1e1e2e">
+<section id="section-24" class="slide level2" data-rc="Rollout" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>How PPO works, in five steps. Step one: play. Sixty-four copies of CartPole run side by side, each from its own start and each with its own copy of the ring. This is the real batch of the fourth training iteration.</p>
@@ -550,7 +534,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-26" class="slide level2" data-rc="Advantage" data-background-color="#1e1e2e">
+<section id="section-25" class="slide level2" data-rc="Advantage" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>Step two: score every recorded step. Take one game out of the batch. Replayed here: the pole falls partway along and a new game starts.</p>
@@ -566,7 +550,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-27" class="slide level2" data-rc="PolicyGradient" data-background-color="#1e1e2e">
+<section id="section-26" class="slide level2" data-rc="PolicyGradient" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>Step three, the policy step. Three real steps from the batch: the readout’s odds, the action it drew, and the advantage: better than expected, about as expected, worse.</p>
@@ -582,7 +566,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-28" class="slide level2" data-rc="ClipRatio" data-background-color="#1e1e2e">
+<section id="section-27" class="slide level2" data-rc="ClipRatio" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>Step four, the clip. Per step, one number: the new probability of its action over the old one. For a good step the plain rule says the bigger the better, without limit; PPO bends that line flat at one point two, so past twenty percent more likely the step stops pushing. A bad step is the mirror image, down to zero point eight. Going the wrong way is never capped.</p>
@@ -598,7 +582,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-29" class="slide level2" data-rc="Epochs" data-background-color="#1e1e2e">
+<section id="section-28" class="slide level2" data-rc="Epochs" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>Step five. The same batch is used twenty times: twenty epochs, each one moving W a little. The ring is not used again: the epochs are arithmetic on the stored spectra.</p>
@@ -614,7 +598,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-30" class="slide level2" data-rc="RankOne" data-background-color="#1e1e2e">
+<section id="section-29" class="slide level2" data-rc="RankOne" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>Now the part that matters most: what exactly happens to W. Here is W at this iteration, two rows of seventeen, and the batch. Take one recorded step out of it.</p>
@@ -630,7 +614,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-31" class="slide level2" data-rc="WLearns" data-background-color="#1e1e2e">
+<section id="section-30" class="slide level2" data-rc="WLearns" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>The whole training run, the real one, in one sweep: 60 iterations of play a batch, twenty epochs. W starts as all zeros, so at first the agent pushes at random and the pole drops. The grid is the real W after each iteration, the curve is the return, and the cart plays with the W it has at that moment, twice real time. By the end these thirty-four weights balance the pole for the full five hundred steps. Nothing else in the system changed.</p>
@@ -646,7 +630,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-32" class="slide level2" data-rc="AskOnce" data-background-color="#1e1e2e">
+<section id="section-31" class="slide level2" data-rc="AskOnce" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>Where the ring sits in one training iteration. First the games are played: 64 games times 32 steps, and every step goes through the ring once, so the ring is used 2048 times. Each step’s spectrum phi is stored, with the action taken and, once the games are scored, its advantage. That is the batch.</p>
@@ -662,7 +646,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-33" class="slide level2" data-rc="Sec5" data-background-color="#1e1e2e">
+<section id="section-32" class="slide level2" data-rc="Sec5" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>Part five: why bother with the ring at all. The readout is only a linear map, so what it can do depends on what the comb hands it. First XOR, as a picture. Then Pendulum, where the ring beats a linear readout.</p>
@@ -678,7 +662,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-34" class="slide level2" data-rc="XorCut" data-background-color="#1e1e2e">
+<section id="section-33" class="slide level2" data-rc="XorCut" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>Start with XOR: two inputs, red where they agree, blue where they differ. A linear readout that sees x one and x two draws one straight line, and at least one point is always on the wrong side.</p>
@@ -694,7 +678,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-35" class="slide level2" data-rc="RacePendulum" data-background-color="#1e1e2e">
+<section id="section-34" class="slide level2" data-rc="RacePendulum" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>Pendulum: the linear readout on the left, the ring on the right, same start, same random draws, replayed as training goes on. At first both push at random. By update 35 the ring pumps, goes over and holds; the linear readout only swings. After 250 updates the ring is up in three seconds. On 64 fresh starts: linear −745, ring −245.</p>
@@ -710,7 +694,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-36" class="slide level2" data-rc="Sec6" data-background-color="#1e1e2e">
+<section id="section-35" class="slide level2" data-rc="Sec6" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>Last part: what comes next. A direct test of the ring’s nonlinearity, where this scheme fits and where it doesn’t yet, what a lattice of rings might buy, and how far the optics could reach.</p>
@@ -726,7 +710,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-37" class="slide level2" data-rc="XorTest" data-background-color="#1e1e2e">
+<section id="section-36" class="slide level2" data-rc="XorTest" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>First, the next thing to measure in the lab: Mohammad’s XOR test of the ring’s nonlinearity. Two tones, each low or high; call them zero and one, so four inputs, through the same ring: four spectra. For a linear ring, combine the four outputs the XOR way and you get zero. Whatever is left is the nonlinearity. A linear device can only do XOR with a threshold somewhere, and that threshold is itself a nonlinearity. Here it would be the Kerr effect.</p>
@@ -742,7 +726,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-38" class="slide level2" data-rc="SmallInputs" data-background-color="#1e1e2e">
+<section id="section-37" class="slide level2" data-rc="SmallInputs" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>Where does this fit? Every input gets its own tone. CartPole: four tones beside the pump, seventeen lines read, ten pair products.</p>
@@ -758,7 +742,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-39" class="slide level2" data-rc="PhaseSpaceMap" data-background-color="#1e1e2e">
+<section id="section-38" class="slide level2" data-rc="PhaseSpaceMap" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>Next direction: grow the reservoir. One ring becomes a lattice of coupled rings, like Lida’s. For one ring we have the map from part two. For a lattice there is no general model of its phase space yet: nobody has that map. Mohammad’s suggestion is to scan it and let a classifier sort the states by itself, unsupervised. And we don’t know, in general, whether more rings buy us anything. It could be richer states, a denser feature space, or memory for an optical critic. The one I have tried is the last: Lida’s lattice as the critic’s reservoir. On Pendulum it beat a linear critic, but mostly by remembering the last step, not through the Kerr effect; on LunarLander nothing separated. So it is open.</p>
@@ -774,7 +758,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-40" class="slide level2" data-rc="AllOptical" data-background-color="#1e1e2e">
+<section id="section-39" class="slide level2" data-rc="AllOptical" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>This much is optics today: the tones, the ring and its comb. Everything else, squashing the numbers, the readout, the softmax, the training, is a computer.</p>
@@ -790,7 +774,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-41" class="slide level2" data-rc="Thanks" data-background-color="#1e1e2e">
+<section id="section-40" class="slide level2" data-rc="Thanks" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>Thank you. All of this stands on Pasha’s code and on what Lida, Shi-Yuan, Mahmoud and Mohammad taught me these past weeks. Happy to take questions.</p>
@@ -806,7 +790,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-42" class="slide level2" data-rc="Appendix" data-background-color="#1e1e2e">
+<section id="section-41" class="slide level2" data-rc="Appendix" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>Backup slides, for questions.</p>
@@ -822,7 +806,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-43" class="slide level2" data-rc="AppCartPole" data-background-color="#1e1e2e">
+<section id="section-42" class="slide level2" data-rc="AppCartPole" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>For reference: CartPole’s rules. One point per step until the pole passes twelve degrees or the cart leaves the track, capped at five hundred steps.</p>
@@ -838,7 +822,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-44" class="slide level2" data-rc="AppPendulum" data-background-color="#1e1e2e">
+<section id="section-43" class="slide level2" data-rc="AppPendulum" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>Pendulum’s rules. Every step costs the squared angle from upright plus a little for speed and torque, for two hundred steps; nothing ends the game early.</p>
@@ -854,7 +838,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-45" class="slide level2" data-rc="AppLander" data-background-color="#1e1e2e">
+<section id="section-44" class="slide level2" data-rc="AppLander" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>The lander’s rules. Each step is scored by how much closer, slower and more upright it got, minus fuel; plus or minus a hundred at the end. Two hundred counts as landed.</p>
@@ -870,7 +854,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-46" class="slide level2" data-rc="AppPasha" data-background-color="#1e1e2e">
+<section id="section-45" class="slide level2" data-rc="AppPasha" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>The settings, for the record. Left, PPO: sixty-four games, thirty-two steps, twenty passes, clip at 0.2. Right, the ring in the pattern-free regime.</p>
@@ -886,7 +870,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-47" class="slide level2" data-rc="AppExplored" data-background-color="#1e1e2e">
+<section id="section-46" class="slide level2" data-rc="AppExplored" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>What I played with in my own repositories. Everything here was re-run on my template and reproduces. Several of October’s conclusions flipped in the re-run.</p>
@@ -902,7 +886,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-48" class="slide level2" data-rc="PendulumNeeds" data-background-color="#1e1e2e">
+<section id="section-47" class="slide level2" data-rc="PendulumNeeds" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>The game that needs it: the trained ring, starting from hanging. At the bottom the torque points along the motion, so each swing gains energy. On the right, the same motion in the plane of angle and speed.</p>
@@ -918,7 +902,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-49" class="slide level2" data-rc="WhyProducts" data-background-color="#1e1e2e">
+<section id="section-48" class="slide level2" data-rc="WhyProducts" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>Monday’s question: why is a product more nonlinear than a linear layer? First, how to read these maps. Each point is one state of the pendulum: its angle across, from hanging through upright to hanging, and how fast it spins, up the side. Take a state, give it to the readout, see which way it pushes, and colour the point: red counter-clockwise, blue clockwise. Do that for every point and you get the map; the white line is where the choice flips. This is Pasha’s trained linear readout: weights on the three inputs only.</p>
@@ -934,7 +918,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-50" class="slide level2" data-rc="PolicyMaps" data-background-color="#1e1e2e">
+<section id="section-49" class="slide level2" data-rc="PolicyMaps" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>Now the ring. The same kind of map: every state goes through the encoding, the ring in Pasha’s solver and the trained readout, and gets the colour of the torque picked. Left the linear readout, right the ring; both are Pasha’s published readouts. The white line is one swing-up attempt from hanging. The linear readout has a single border, so its pendulum pushes one way and circles near the bottom. The ring’s map flips sign with theta dot and with cosine theta, and its pendulum goes over the top and is caught. Average return: minus 718 against minus 252.</p>
@@ -950,7 +934,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-51" class="slide level2" data-rc="LineFour" data-background-color="#1e1e2e">
+<section id="section-50" class="slide level2" data-rc="LineFour" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>Keep that red bar and ask where the ring makes it. Four-wave mixing takes a photon each from lines one and three and puts them on zero and four: cosine theta times theta dot. Two photons from line two can land there too.</p>
@@ -966,7 +950,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-52" class="slide level2" data-rc="LanderTruth" data-background-color="#1e1e2e">
+<section id="section-51" class="slide level2" data-rc="LanderTruth" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>The lander, and Shi-Yuan’s question: does it need a nonlinearity at all? At update zero both crash. At update 25 the ring lands slowly and the linear one touches down but keeps firing.</p>
@@ -982,7 +966,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-53" class="slide level2" data-rc="CartPoleHonest" data-background-color="#1e1e2e">
+<section id="section-52" class="slide level2" data-rc="CartPoleHonest" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>CartPole, the honest counterexample. At update zero both fall in a quarter of a second. A fallen pole is only twelve degrees over: that is where the game stops.</p>
@@ -998,7 +982,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-54" class="slide level2" data-rc="WhyOffset" data-background-color="#1e1e2e">
+<section id="section-53" class="slide level2" data-rc="WhyOffset" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>Why the plus one? Without it the amplitude follows the number, sign and all. Tilt the pole left, then right: the amplitude flips sign, but a detector reads intensity, so both poses look the same.</p>
@@ -1014,7 +998,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-55" class="slide level2" data-rc="ClosedBox" data-background-color="#1e1e2e">
+<section id="section-54" class="slide level2" data-rc="ClosedBox" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>This is all we use about the reservoir. Five lines of light go in: the pump and one tone per number. A comb comes out, and we read seventeen lines.</p>
@@ -1030,7 +1014,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-56" class="slide level2" data-rc="BeyondReadout" data-background-color="#1e1e2e">
+<section id="section-55" class="slide level2" data-rc="BeyondReadout" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>Two more directions. Today only the readout learns, in red. The critic and the softmax are still electronics: both are candidates to move into the optics.</p>
@@ -1046,7 +1030,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-57" class="slide level2" data-rc="WhyPPO" data-background-color="#1e1e2e">
+<section id="section-56" class="slide level2" data-rc="WhyPPO" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>Why PPO. The oldest recipe, the plain policy gradient: play a batch of games, take one small step towards the actions that paid off, discard the batch. On our own system, five runs: it gets there, slowly.</p>
@@ -1062,7 +1046,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-58" class="slide level2" data-rc="LogitLooks" data-background-color="#1e1e2e">
+<section id="section-57" class="slide level2" data-rc="LogitLooks" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>I also played with how the readout uses the lines the ring makes. This is the trained CartPole readout: the weight for push right minus the weight for push left, line by line. Blue lines are the ones we drive, lavender the ones the ring made. About two thirds of the weight sits on the new lines.</p>
@@ -1078,7 +1062,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-59" class="slide level2" data-rc="BestEps" data-background-color="#1e1e2e">
+<section id="section-58" class="slide level2" data-rc="BestEps" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>This is my own sweep. For each regime I scanned the tone strength. The y-axis is the held-out R squared of a linear readout of the seventeen line intensities: how well a weighted sum of the lines reproduces a target, on inputs it was not fitted on. One means perfectly. There are three targets: the inputs themselves, their pair products, one input times another, and their triple products. The thin lines are three seeds, the thick line is their mean. The inputs come through almost anywhere. The products do not: every regime has a window, and the dashed line marks its best epsilon, where the pair products are recovered best. Push past it and the soliton and the rolls lose their pattern; stay below it and the chaotic comb hides the tones in its own noise. So epsilon is a real knob, and its best value depends on the regime.</p>
@@ -1094,7 +1078,7 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-60" class="slide level2" data-rc="RegimeSettles" data-background-color="#1e1e2e">
+<section id="section-59" class="slide level2" data-rc="RegimeSettles" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>One thing I played with. The ring has four regimes, and the main pump and the detuning alone pick which one. The pump is on all the time; it is never switched off. At time zero only the weak tones change, from one state of a game to another, and they stay on. In the no-pattern ring the seventeen lines relax to a new steady comb in about eight decay times and stay there. A control step lasts about a million of those, so here one input gives one comb.</p>
@@ -1110,10 +1094,26 @@
           display:block!important;
       }</style></aside>
 </section>
-<section id="section-61" class="slide level2" data-rc="KerrOnOff" data-background-color="#1e1e2e">
+<section id="section-60" class="slide level2" data-rc="KerrOnOff" data-background-color="#1e1e2e">
 <h2></h2>
 <aside class="notes">
 <p>The reservoir is a microring next to a waveguide. Five lines of light go in: the pump and one tone per number. A comb comes out, and we read seventeen lines: twelve of them we never put in.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="section-61" class="slide level2" data-rc="ProjectAim" data-background-color="#1e1e2e">
+<h2></h2>
+<aside class="notes">
+<p>My aim is to understand it as a reservoir computer. In that language the ring is the reservoir: a fixed physical system that turns the input into features. The small matrix is the readout, and it is all that learns: thirty-six numbers for this game.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
