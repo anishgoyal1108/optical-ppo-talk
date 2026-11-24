@@ -30,6 +30,10 @@ jobs:
         uses: actions/upload-pages-artifact@v5
         with:
           path: site
+      # The deploy step asks for the artifact the moment the upload ends, and GitHub lists it a moment later:
+      # without this pause the deploy failed with "No artifacts named github-pages were found" (Nov 20, Nov 24).
+      - name: Wait until the artifact is listed
+        run: sleep 20
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v5
